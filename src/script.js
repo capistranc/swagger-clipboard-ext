@@ -25,23 +25,27 @@ function copyTextToClipboard(text) {
 }
 
 window.addEventListener("submit", function (e) {
+  //This should grab the form that the user clicked submit on
   const targetElement = e.target.parentElement;
 
   const observerOptions = {
     childList: true,
   };
 
+  //create mutation observer to track when angular renders the response(explorer) body component
   const observer = new MutationObserver((mutationsList) => {
     const resultElement = mutationsList.map((mutation) => {
       if (mutation.type === "childList" && mutation.addedNodes.length > 0) {
-        const explorerResult = targetElement.querySelector(".explorer-body");
+        //response body is stored in the class explorer-body
+        const responseBody = targetElement.querySelector(".explorer-body");
 
-        $(explorerResult).dblclick((e) => {
-          copyTextToClipboard(explorerResult.innerText);
+        $(responseBody).dblclick((e) => {
+          copyTextToClipboard(responseBody.innerText);
         });
       }
     });
   });
 
+  //watch the form component that user clicked submit on.
   observer.observe(targetElement, observerOptions);
 });
