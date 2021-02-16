@@ -48,7 +48,7 @@ window.addEventListener("submit", function (e) {
         };
 
         const button = document.createElement("button");
-        button.innerText = "Copy ";
+        button.innerText = "Copy All";
         button.onclick = handleClick;
 
         responseBody.insertAdjacentElement("beforeBegin", button);
