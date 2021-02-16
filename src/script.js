@@ -25,35 +25,51 @@ function copyTextToClipboard(text) {
 }
 
 window.addEventListener("submit", function (e) {
-  //This should grab the form that the user clicked submit on
-
+  //Only run if swagger ui class exists
   if (!document.querySelector(".swagger-ui")) {
     return;
   }
+
+  //This should grab the form that the user clicked submit on
   const targetElement = e.target.parentElement;
 
+  //create mutation observer to track when angular renders the response(explorer-body) component
   const observerOptions = {
     childList: true,
   };
 
-  //create mutation observer to track when angular renders the response(explorer-body) component
   const observer = new MutationObserver((mutationsList) => {
-    const resultElement = mutationsList.map((mutation) => {
+    const responseBody = mutationsList.map((mutation) => {
       if (mutation.type === "childList" && mutation.addedNodes.length > 0) {
         //response body is stored in the class explorer-body
         const responseBody = targetElement.querySelector(".explorer-body");
-
-        const handleClick = (e) => {
-          copyTextToClipboard(responseBody.innerText);
-        };
-
-        const button = document.createElement("button");
-        button.innerText = "Copy All";
-        button.onclick = handleClick;
-
-        responseBody.insertAdjacentElement("beforeBegin", button);
+        return responseBody;
       }
-    });
+    })[0];
+
+    //if responseBody is not found exit
+    if (!responseBody) {
+      return;
+    }
+
+    //If responseBody is already being observed than exit
+    if (responseBody.observed == true) {
+      return;
+    } else {
+      //else set observed to true so we don't spawn redundant observers
+      responseBody.observed = true;
+    }
+
+    //Create button to copy responseBody to clipboard
+    const handleClick = (e) => {
+      copyTextToClipboard(responseBody.innerText);
+    };
+    const button = document.createElement("button");
+    button.innerText = "Copy All";
+    button.onclick = handleClick;
+
+    //Insert button before response-body
+    responseBody.insertAdjacentElement("beforeBegin", button);
   });
 
   //watch the form component that user clicked submit on.
