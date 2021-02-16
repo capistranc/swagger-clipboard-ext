@@ -12,7 +12,7 @@
   "content_scripts": [
     {
       "matches": ["*://*.nextgenaws.net/*"],
-      "js": ["src/content-script.js", "src/jquery-3.5.1.min.js"]
+      "js": ["src/content-script.js"]
     }
   ],
   "web_accessible_resources": ["src/script.js"],
