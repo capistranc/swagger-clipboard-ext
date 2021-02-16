@@ -26,6 +26,10 @@ function copyTextToClipboard(text) {
 
 window.addEventListener("submit", function (e) {
   //This should grab the form that the user clicked submit on
+
+  if (!document.querySelector(".swagger-ui")) {
+    return;
+  }
   const targetElement = e.target.parentElement;
 
   const observerOptions = {
