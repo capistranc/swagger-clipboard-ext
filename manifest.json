@@ -11,8 +11,8 @@
   "default_locale": "en",
   "content_scripts": [
     {
-      "matches": ["*://*.nextgenaws.net/*"],
-      "js": ["src/content-script.js"]
+      "matches": ["*://*/*"],
+      "js": ["src/index.js"]
     }
   ],
   "web_accessible_resources": ["src/script.js"],
