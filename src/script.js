@@ -32,16 +32,22 @@ window.addEventListener("submit", function (e) {
     childList: true,
   };
 
-  //create mutation observer to track when angular renders the response(explorer) body component
+  //create mutation observer to track when angular renders the response(explorer-body) component
   const observer = new MutationObserver((mutationsList) => {
     const resultElement = mutationsList.map((mutation) => {
       if (mutation.type === "childList" && mutation.addedNodes.length > 0) {
         //response body is stored in the class explorer-body
         const responseBody = targetElement.querySelector(".explorer-body");
 
-        $(responseBody).dblclick((e) => {
+        const handleClick = (e) => {
           copyTextToClipboard(responseBody.innerText);
-        });
+        };
+
+        const button = document.createElement("button");
+        button.innerText = "Copy All";
+        button.onclick = handleClick;
+
+        responseBody.insertAdjacentElement("beforeBegin", button);
       }
     });
   });
